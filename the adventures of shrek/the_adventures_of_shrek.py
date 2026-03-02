@@ -197,3 +197,34 @@ class Forest(Location):
             else:
               print("you do not find anything")
 
+class Tower(Location):
+    def __init__(self, name, description):
+        Location.__init__(self, name, description)
+        self.riddle_solved = False
+
+    def enter(self):
+        global player
+
+        if self.riddle_solved == False:
+            print("Standing in front of you is a wizard.")
+            print('"Who dares enter my tower?"')
+            print('"I have a riddle for you bold adventurer."')
+
+            answer = input(
+                "I am tall when I am young and I am short when I am old. What am I? "
+            ).lower().strip()
+
+            if answer == "candle":
+                print('"Curses!"')
+                print("Here is a health potion to help with your journey.")
+                print("With a puff of smoke the wizard disappears.")
+                player.inventory.append(
+                    Potion("Potion", "A vial of potion emitting warmth and light.")
+                )
+                self.riddle_solved = True
+            else:
+                print('"Wrong!"')
+                print("With a wave of his hand he blasts you out the door.")
+                player.move("outside")
+        else:
+            print("There is nothing here.")
