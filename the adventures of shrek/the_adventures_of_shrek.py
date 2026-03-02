@@ -141,7 +141,7 @@ class Player:
         if self.location.monster != 0 and self.location.monster.name.lower() == monster_name.lower():
             random_number = random.randint(0, self.attack + self.location.monster.defense)
 
-            if random_number > self.location.moster.defense:
+            if random_number > self.location.monster.defense:
                 damage = random_number - self.location.monster.defense
                 self.location.monster.health -= damage
 
@@ -173,6 +173,26 @@ class Potion(Item):
         print("you uncork the potion and drint deeply - warmth spreads through your body as your wounds begin to close.")
         Player.heal(Player.max_health)
         Player.inventory.remove(self)
-         
 
-     
+class Forest(location):
+    def __init__(self, name,discription):
+        Location.__init__(self, name, discription)
+        self.skeleton_examined = False
+
+    def enter(self):
+        print("there is a skeleton of an old soldier here.")
+         
+ 
+    def examine(self, thing):
+        if thing.lower() == "skeleton":
+            if self.sekleton_examined == False:
+                shield = Sheild("Shield", "Shield", 100)
+                sword = Weapon("Sword", "Sword", 100) 
+
+                self.items.append(shield)
+                self.items.append(sword)
+
+                self.skeleton_examined = True
+                print("you see a sword and shield.")
+            else:
+              print("you do not find anything")
