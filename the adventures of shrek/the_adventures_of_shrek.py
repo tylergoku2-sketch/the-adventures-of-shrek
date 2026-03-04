@@ -84,7 +84,7 @@ class Location:
             print(self.monster.description)
 
         # Special message if ogre is dead
-        if self.name == "Cave" and self.monster is None:
+        if self.name == "cookie_factory" and self.monster is None:
             print("\nThe corpse of the ogre lies motionless on the ground.")
 
 
@@ -108,21 +108,23 @@ class Forest(Location):
 
 
 class Tower(Location):
+    global player
+
     def __init__(self, name, description):
         super().__init__(name, description)
         self.riddle_solved = False
 
     def enter(self):
         if not self.riddle_solved:
-            print("\nA wizard blocks your path.")
+            print("\nA harry potter blocks your path.")
             answer = input("I am tall when young and short when old. What am I? ").lower().strip()
 
             if answer == "candle":
-                print("Correct! The wizard vanishes in smoke.")
-                self.items.append(Potion("Potion", "A glowing healing potion"))
+                print("Correct!  here is a health potion for your travels then  harry potter swishes his wand and vanishes in smoke.")
+                player.inventory.append(Potion("Potion", "A glowing healing potion"))
                 self.riddle_solved = True
             else:
-                print("Wrong! The wizard blasts you outside.")
+                print("Wrong! harry potter blasts you outside.")
                 player.move("outside")
         else:
             print("The tower is quiet.")
@@ -229,7 +231,7 @@ class Player:
 
         if monster.health <= 0:
             print(f"\nYou have slain the {monster.name}!")
-            print("The cave grows silent. The threat is gone forever.")
+            print("The cookie factory grows silent. The threat is gone forever.")
             self.location.monster = None
             return
 
@@ -267,31 +269,31 @@ def show_commands():
 
 village = Location("Village", "A peaceful village.")
 forest = Forest("Forest", "Dark trees surround you.")
-cave_entrance = Location("Cave Entrance", "A dark cave entrance.")
-cave = Location("Cave", "A cold damp cave.")
+cookie_factory_entrance = Location("the cookie factory Entrance", "A factory full of cookies.")
+cookie_factory = Location("cookie factory", "the cookie factory.")
 tower_entrance = Location("Tower Entrance", "A tall tower stands here.")
 tower = Tower("Tower", "A room filled with ancient tomes.")
 
 village.link(forest, "north")
 forest.link(village, "south")
-forest.link(cave_entrance, "east")
+forest.link(cookie_factory_entrance, "east")
 forest.link(tower_entrance, "west")
-cave_entrance.link(cave, "inside")
-cave_entrance.link(forest, "west")
-cave.link(cave_entrance, "outside")
+cookie_factory_entrance.link(cookie_factory, "inside")
+cookie_factory_entrance.link(forest, "west")
+cookie_factory.link(cookie_factory, "outside")
 tower_entrance.link(tower, "inside")
 tower_entrance.link(forest, "east")
 tower.link(tower_entrance, "outside")
 
 player = Player("Player", village, 1, 0, 100)
 
-ogre = Monster(
-    "Ogre",
-    "A hulking brute with green skin and a massive club.",
+cookiemonster = Monster(
+    "cookie monster",
+    " the blue monster  with blue fluffy skin and a massive cookie.",
     50, 15, 5
 )
 
-cave.monster = ogre
+cookie_factory.monster = cookiemonster
 
 
 # ------------------ GAME START ------------------
