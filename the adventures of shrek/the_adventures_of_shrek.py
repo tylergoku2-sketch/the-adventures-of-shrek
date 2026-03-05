@@ -12,7 +12,7 @@ class Item:
         return f"{self.name}: {self.description}"
 
 
-class Weapon(Item):
+class Copper_short_sword(Item):
     def __init__(self, name, description, power):
         super().__init__(name, description)
         self.power = power
@@ -97,17 +97,17 @@ class Forest(Location):
         print("There is a skeleton of an old soldier here.")
 
     def examine(self, thing):
-        if thing.lower() == "skeleton":
+        if thing.lower() == "":
             if not self.skeleton_examined:
                 self.items.append(Shield("Shield", "An old iron shield", 10))
-                self.items.append(Weapon("Sword", "A rusted but sharp blade", 15))
+                self.items.append(Copper_short_sword("Sword", "A rusted but sharp blade", 15))
                 self.skeleton_examined = True
-                print("You find a sword and shield!")
+                print("You find a copper short sword and shield!")
             else:
                 print("You find nothing else.")
 
 
-class Tower(Location):
+class Hogwarts(Location):
     global player
 
     def __init__(self, name, description):
@@ -116,10 +116,10 @@ class Tower(Location):
 
     def enter(self):
         if not self.riddle_solved:
-            print("\nA harry potter blocks your path.")
+            print("\n harry potter blocks your path.")
             answer = input("I am tall when young and short when old. What am I? ").lower().strip()
 
-            if answer == "candle":
+            if answer == "candle"or answer == "A candle"or answer == "a candle":
                 print("Correct!  here is a health potion for your travels then  harry potter swishes his wand and vanishes in smoke.")
                 player.inventory.append(Potion("Potion", "A glowing healing potion"))
                 self.riddle_solved = True
@@ -127,7 +127,7 @@ class Tower(Location):
                 print("Wrong! harry potter blasts you outside.")
                 player.move("outside")
         else:
-            print("The tower is quiet.")
+            print("hogwarts grows quiet.")
 
 
 # ------------------ PLAYER ------------------
@@ -161,7 +161,7 @@ class Player:
                     if type(inv_item) == type(item):
                         self.drop(inv_item.name)
 
-                if isinstance(item, Weapon):
+                if isinstance(item, Copper_short_sword):
                     self.attack = item.power
                 elif isinstance(item, Shield):
                     self.defense = item.power
@@ -177,7 +177,7 @@ class Player:
         for item in self.inventory:
             if item.name.lower() == item_name.lower():
 
-                if isinstance(item, Weapon):
+                if isinstance(item, Copper_short_sword):
                     self.attack = 1
                 elif isinstance(item, Shield):
                     self.defense = 0
@@ -267,23 +267,23 @@ def show_commands():
 
 # ------------------ WORLD SETUP ------------------
 
-village = Location("Village", "A peaceful village.")
+village = Location("shreks swamp", "a cold and damp swamp with a single house full of light.")
 forest = Forest("Forest", "Dark trees surround you.")
 cookie_factory_entrance = Location("the cookie factory Entrance", "A factory full of cookies.")
 cookie_factory = Location("cookie factory", "the cookie factory.")
-tower_entrance = Location("Tower Entrance", "A tall tower stands here.")
-tower = Tower("Tower", "A room filled with ancient tomes.")
+hogwarts_entrance = Location("hogwarts Entrance", "hogwarts castle stands here.")
+hogwarts = Hogwarts("magic room", "A room filled with ancient magic.")
 
 village.link(forest, "north")
 forest.link(village, "south")
 forest.link(cookie_factory_entrance, "east")
-forest.link(tower_entrance, "west")
+forest.link(hogwarts_entrance, "west")
 cookie_factory_entrance.link(cookie_factory, "inside")
 cookie_factory_entrance.link(forest, "west")
-cookie_factory.link(cookie_factory, "outside")
-tower_entrance.link(tower, "inside")
-tower_entrance.link(forest, "east")
-tower.link(tower_entrance, "outside")
+cookie_factory.link(cookie_factory_entrance, "outside")
+hogwarts_entrance.link(hogwarts, "inside")
+hogwarts_entrance.link(forest, "east")
+hogwarts.link(hogwarts_entrance, "outside")
 
 player = Player("Player", village, 1, 0, 100)
 
@@ -298,7 +298,7 @@ cookie_factory.monster = cookiemonster
 
 # ------------------ GAME START ------------------
 
-print("Welcome to the Adventure!")
+print("Welcome to the adventures of shrek")
 show_commands()
 player.location.describe()
 
